@@ -1,14 +1,21 @@
 /*
-Global settings for MultiJammer based on ESP8266
+Global settings for Hamulight mqtt remote on ESP8266
 Jeroen Klock 23-10-2019
-See: https://github.com/klockie86/LedWall
-Todo:
+See: https://github.com/klockie86/Hamulight2MQTT
 */
 ////////////////////////////////////////////////////////////////////////////////
 #ifndef global_h
 #define global_h
 
 #include <Arduino.h>
+// libraries for wifi en webserver
+#include <ESP8266WiFi.h>
+#include <ESP8266WebServer.h>
+#include <DNSServer.h>
+#include <WiFiManager.h>
+#include <WiFiClient.h>
+#include <ESP8266mDNS.h>
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Settings
@@ -29,19 +36,9 @@ class Global{
 private:
   String name = "HamuLight2MQTT";
 public:
-  void init_serial(void);
+  Global();
   String getName(void);
 };
-
-class RF433{
-private:
-  int pin_in,pin_out;
-public:
-  void init(void);
-  int readData(void);
-  void sendData(bool signal);
-};
-
 
 ////////////////////////////////////////////////////////////////////////////////
 #endif
