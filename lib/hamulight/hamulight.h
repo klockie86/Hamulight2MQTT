@@ -7,7 +7,6 @@ See: https://github.com/klockie86/Hamulight2MQTT
 #ifndef hamulight_h
 #define hamulight_h
 
-#include <Arduino.h>
 #include <global.h>
 #include <RF433.h>
 

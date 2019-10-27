@@ -8,7 +8,6 @@ See: https://github.com/klockie86/Hamulight2MQTT
 #define RF433_h
 
 #include <Arduino.h>
-#include <global.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 // Classes

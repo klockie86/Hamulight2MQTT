@@ -8,14 +8,11 @@ See: https://github.com/klockie86/Hamulight2MQTT
 #define global_h
 
 #include <Arduino.h>
-// libraries for wifi en webserver
-#include <ESP8266WiFi.h>
-#include <ESP8266WebServer.h>
-#include <DNSServer.h>
-#include <WiFiManager.h>
-#include <WiFiClient.h>
-#include <ESP8266mDNS.h>
 
+
+
+// custom libraries
+#include <hamulight.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 // Settings
