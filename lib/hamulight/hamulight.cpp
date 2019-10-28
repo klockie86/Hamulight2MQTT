@@ -7,7 +7,6 @@ See: https://github.com/klockie86/Hamulight2MQTT
 #include <hamulight.h>
 
 Hamulight::Hamulight(){
-    DBG_OUTPUT_PORT.println("Initializing hamulight");
     pin_in = RF433_RECEIVE_PIN;
     pin_out = RF433_EMIT_PIN;
 }

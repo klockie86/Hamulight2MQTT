@@ -9,8 +9,6 @@ See: https://github.com/klockie86/Hamulight2MQTT
 
 #include <Arduino.h>
 
-
-
 // custom libraries
 #include <hamulight.h>
 
@@ -24,17 +22,17 @@ See: https://github.com/klockie86/Hamulight2MQTT
 #define RF433_RECEIVE_PIN D2
 #define RF433_EMIT_PIN D3
 
-
-
 ////////////////////////////////////////////////////////////////////////////////
 // Classes
 ////////////////////////////////////////////////////////////////////////////////
 class Global{
 private:
   String name = "HamuLight2MQTT";
+  String pass = "configHamu";
 public:
   Global();
   String getName(void);
+  String getPass(void);
 };
 
 ////////////////////////////////////////////////////////////////////////////////

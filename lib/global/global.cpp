@@ -15,3 +15,7 @@ Global::Global(){
 String Global::getName(void){
     return name;
 }
+
+String Global::getPass(void){
+    return pass;
+}
