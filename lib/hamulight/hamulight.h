@@ -17,6 +17,9 @@ See: https://github.com/klockie86/Hamulight2MQTT
 ////////////////////////////////////////////////////////////////////////////////
 class Hamulight: public RF433{
 private:
+  bool state;
+  unsigned int brightness;
+  const unsigned int maxBright = 255;
   const unsigned int period = 200;
   boolean bitstreams[5][148]=
   /* on_off */   {{1,0,1,0,1,0,1,0,1,1,1,1,1,1,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,1,1,0,1,1,1,0,1,1,1,0,1,1,1,0,1,0,0,0,1,0,0,0,1,1,1,0,1,0,0,0,1,0,0,0,1,0,0,0,1,1,1,0,1,1,1,0,1,0,0,0,1,1,1,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,1,1,0,1,0,0,0,1,0,0,0,1,0,0,0,1,1,1,0,1,1,1,0,1,0,0,0,1,1,1,0},
@@ -26,10 +29,13 @@ private:
   /* bright100*/  {1,0,1,0,1,0,1,0,1,1,1,1,1,1,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,1,1,0,1,1,1,0,1,1,1,0,1,1,1,0,1,0,0,0,1,0,0,0,1,1,1,0,1,0,0,0,1,0,0,0,1,0,0,0,1,1,1,0,1,1,1,0,1,0,0,0,1,1,1,0,1,0,0,0,1,0,0,0,1,1,1,0,1,1,1,0,1,0,0,0,1,1,1,0,1,0,0,0,1,0,0,0,1,1,1,0,1,0,0,0,1,0,0,0,1,1,1,0,1,1,1,0}};
 
 public:
-  enum state{on_off, bright25, bright50, bright75, bright100};
+  enum command{on_off, bright25, bright50, bright75, bright100};
   Hamulight();
+  void switchOn();
+  void switchOff();
+  void setbrightness(uint);
   void init(void);
-  void send(Hamulight::state);
+  void send(Hamulight::command);
 };
 
 

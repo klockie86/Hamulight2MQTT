@@ -24,13 +24,37 @@ WiFiClient wificlient;
 MQTT client(wificlient);
 
 
-
 //callback notifying us of the need to save config
 void saveConfigCallback () {
   DBG_OUTPUT_PORT.println("Should save config");
   client.shouldSave();
 }
 
+void callback(char* topic, byte* payload, unsigned int length) {
+  DBG_OUTPUT_PORT.println("Callback received: "+String(topic));
+
+  char buffer[length];
+  memcpy(buffer,payload,length);
+  buffer[length] = '\0';
+  String received = String(buffer);
+  DBG_OUTPUT_PORT.println("Message: "+received);
+
+  if(strcmp(topic, CMD_BRIGHT_TOPIC) == 0){
+    DBG_OUTPUT_PORT.println("setting brightness: "+received);
+    hamulight.setbrightness(received.toInt());
+    client.publish(STATE_BRIGHT_TOPIC, received.c_str());
+  }
+  else if(strcmp(topic, CMD_TOPIC) == 0){
+    DBG_OUTPUT_PORT.println("Swithing");
+    if((String)received == "ON"){
+      hamulight.switchOn();
+    }
+    else if((String)received == "OFF"){
+      hamulight.switchOff();
+    }
+    client.publish(STATE_TOPIC, received.c_str());
+  }
+}
 
 
 void setup(){
@@ -39,7 +63,7 @@ void setup(){
   client.readSettings();
 
   // show custom parameters in wifi webinterface
-  WiFiManagerParameter custom_mqtt_server("server", "mqtt server",client.getServer().c_str(), 40);
+  WiFiManagerParameter custom_mqtt_server("server", "mqtt server",client.getServerName().c_str(), 40);
   WiFiManagerParameter custom_mqtt_port("port", "mqtt port", client.getPort().c_str(), 6);
   WiFiManagerParameter custom_mqtt_user("user", "mqtt user", client.getUser().c_str(), 20);
   WiFiManagerParameter custom_mqtt_pass("pass", "mqtt pass", client.getPass().c_str(), 30);
@@ -59,25 +83,32 @@ void setup(){
   // make connection
   wifiManager.autoConnect(global.getName().c_str(), global.getPass().c_str());
 
-  //read updated parameters
-  client.setServer(custom_mqtt_server.getValue());
+  // read updated parameters
+  client.setServerName(custom_mqtt_server.getValue());
   client.setPort(custom_mqtt_port.getValue());
   client.setUser(custom_mqtt_user.getValue());
   client.setPass(custom_mqtt_pass.getValue());
 
+  // set MQTT server
+  client.setServer();//client.getServerName().c_str(), client.getPort().toInt());
+
   // store config
   client.saveSettings();
+  client.setCallback(callback);
   DBG_OUTPUT_PORT.println("Setting up done.");
 }
 
 void loop() {
   // make MQTT connection
-  if (!client.connected()) {
-    client.reconnect(global.getName());
+  if (WiFi.status() == WL_CONNECTED){
+    if (!client.connected()) {
+      client.reconnect(global.getName());
+    }
+    else{
+      client.loop();
+    }
   }
   else{
-    client.loop();
+      DBG_OUTPUT_PORT.println("Wifi not connected");
   }
-  hamulight.send(hamulight.on_off);
-  delay(2000);
 }

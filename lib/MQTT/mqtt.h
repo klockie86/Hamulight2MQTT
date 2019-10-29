@@ -8,17 +8,19 @@ See: https://github.com/klockie86/Hamulight2MQTT
 #define mqtt_h
 /*-------------DEFINE YOUR MQTT ADVANCED PARAMETERS BELOW----------------*/
 #define NAME "HamuLight2MQTT"
-#define BASE_TOPIC "/home"
-#define VERSION_TOPIC "/version"
-#define WILL_TOPIC "/LWT"
+#define BASE_TOPIC "homeassistant"
+#define VERSION_TOPIC BASE_TOPIC "/" NAME "/version"
+#define WILL_TOPIC BASE_TOPIC "/" NAME "/LWT"
 #define WILL_QOS 0
 #define WILL_RETAIN true
 #define WILL_MESSAGE "offline"
 #define GW_ANNOUNC "online"
 
-#define CMD_TOPIC "/commands/#"
-#define TO_TOPIC "toMQTT"
-#define FROM_TOPIC "MQTTto"
+#define LOCATION "terras"
+#define CMD_TOPIC BASE_TOPIC "/light/" LOCATION "/switch"
+#define STATE_TOPIC BASE_TOPIC "/light/" LOCATION "/status"
+#define CMD_BRIGHT_TOPIC BASE_TOPIC "/light/" LOCATION "/brightness/set"
+#define STATE_BRIGHT_TOPIC BASE_TOPIC "/light/" LOCATION "/brightness/status"
 
 #define CONFIGFILE "/config.json"
 
@@ -26,11 +28,11 @@ See: https://github.com/klockie86/Hamulight2MQTT
 #include <Arduino.h>
 #include <global.h>
 
+#include <WiFiManager.h>
+
 //needed for MQTT
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
-
-#include <WiFiManager.h>
 
 //for storing values
 #include <FS.h>
@@ -46,23 +48,25 @@ private:
   String server = "192.168.1.100";
   String port = "1883";
   bool save;
+  WiFiClient client;
 
 public:
-  MQTT(WiFiClient);
+  MQTT(WiFiClient client):PubSubClient(client){};
   String getUser(void);
   String getPass(void);
-  String getServer(void);
+  String getServerName(void);
   String getPort(void);
 
   void setUser(String);
   void setPass(String);
-  void setServer(String);
+  void setServerName(String);
   void setPort(String);
 
   void shouldSave(void);
   void saveSettings(void);
   void readSettings(void);
 
+  void setServer();
   void reconnect(String);
 };
 

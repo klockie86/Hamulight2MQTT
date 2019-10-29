@@ -7,9 +7,9 @@ See: https://github.com/klockie86/Hamulight2MQTT
 #include <mqtt.h>
 
 // default constructor
-MQTT::MQTT(WiFiClient){
+/*MQTT::MQTT(WiFiClient):PubSubClient(WiFiClient){
 };
-
+*/
 // get and set functions
 String MQTT::getUser(void){
   return user;
@@ -19,7 +19,7 @@ String MQTT::getPass(void){
   return pass;
 };
 
-String MQTT::getServer(void){
+String MQTT::getServerName(void){
   return server;
 };
 
@@ -35,7 +35,7 @@ void MQTT::setPass(String val){
   pass = val;
 };
 
-void MQTT::setServer(String val){
+void MQTT::setServerName(String val){
   server = val;
 };
 
@@ -48,6 +48,12 @@ void MQTT::setPort(String val){
 void MQTT::shouldSave(void){
   save = true;
 };
+
+
+// overload function from pubsub
+void MQTT::setServer(void){
+  PubSubClient::setServer(server.c_str(), port.toInt());
+}
 
 // read values from spiffs
 void MQTT::readSettings(void){
@@ -111,20 +117,23 @@ void MQTT::saveSettings(void){
 
 
 // re-connect to server
-void MQTT::reconnect(String sName){
+void MQTT::reconnect(String name){
     // Loop until we're reconnected
-    while(!connected()) {
-      DBG_OUTPUT_PORT.println("Attempting to connect to MQTT broker");
-      if (connect(sName.c_str(),user.c_str(), pass.c_str(), WILL_TOPIC, WILL_QOS, WILL_RETAIN, WILL_MESSAGE)){
-//    if(connect(sName.c_str())){
+    while(!PubSubClient::connected()) {
+      DBG_OUTPUT_PORT.println("Attempting to connect to MQTT broker as "+name);
+      if (connect(name.c_str(),user.c_str(), pass.c_str(), WILL_TOPIC, WILL_QOS, WILL_RETAIN, WILL_MESSAGE)){
         DBG_OUTPUT_PORT.println("connected");
         failures = 0;
-      // Once connected, publish an announcement...
-    //  publish(WILL_TOPIC, GW_ANNOUNC, WILL_RETAIN);
-      // Subscribe to topic
-    //  if (subscribe(CMD_TOPIC)){
-    //    DBG_OUTPUT_PORT.println("subscribed to topic: "+(String)CMD_TOPIC);
-    //  }
+        // Once connected, publish an announcement...
+        publish(WILL_TOPIC, GW_ANNOUNC, WILL_RETAIN);
+        // Subscribe to topic
+        if (subscribe(CMD_TOPIC)){
+          DBG_OUTPUT_PORT.println("subscribed to topic: "+(String)CMD_TOPIC);
+        }
+        if (subscribe(CMD_BRIGHT_TOPIC)){
+          DBG_OUTPUT_PORT.println("subscribed to topic: "+(String)CMD_BRIGHT_TOPIC);
+        }
+
       }
       else{
         DBG_OUTPUT_PORT.println("failed connecting to mqtt, try again in 5 sec");
