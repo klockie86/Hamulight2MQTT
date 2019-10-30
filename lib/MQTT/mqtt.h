@@ -37,10 +37,9 @@ See: https://github.com/klockie86/Hamulight2MQTT
 //for storing values
 #include <FS.h>
 
-
 class MQTT: public PubSubClient{
 private:
-  const int maxRetry = 5;
+  const int maxRetry = 0;  // max reconnection tries, 0 = endless
   int failures = 0;
   //MQTT Parameters definition
   String user = "your_username";

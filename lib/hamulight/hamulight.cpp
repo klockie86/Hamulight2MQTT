@@ -6,11 +6,14 @@ See: https://github.com/klockie86/Hamulight2MQTT
 ////////////////////////////////////////////////////////////////////////////////
 #include <hamulight.h>
 
+// default constructor
 Hamulight::Hamulight(){
     pin_in = RF433_RECEIVE_PIN;
     pin_out = RF433_EMIT_PIN;
 }
 
+
+// switch on and off, since there's only a code for toggling, remember the state
 void Hamulight::switchOn(){
     if(!state){
       send(on_off);
@@ -25,6 +28,8 @@ void Hamulight::switchOff(){
     state = false;
 };
 
+// set brightness. Only 25, 50 ,75 and 100% available.
+// scale 0-255 down to correct code
 void Hamulight::setbrightness(unsigned int val){
   if(val > maxBright){
     DBG_OUTPUT_PORT.println("brightness out of range: "+val);
@@ -45,7 +50,7 @@ void Hamulight::setbrightness(unsigned int val){
   }
 };
 
-
+// Send the code
 void Hamulight::send(Hamulight::command command){
     DBG_OUTPUT_PORT.println("sending state: "+(String)command);
     for(int j = 0; j < REPEATE ;j++){

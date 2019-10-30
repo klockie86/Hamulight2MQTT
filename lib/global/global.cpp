@@ -7,6 +7,7 @@ See: https://github.com/klockie86/Hamulight2MQTT
 
 #include <global.h>
 
+// default constructor
 Global::Global(){
   DBG_OUTPUT_PORT.begin(DBG_BAUDRATE);
   DBG_OUTPUT_PORT.println("\nInitializing "+name+"\n");

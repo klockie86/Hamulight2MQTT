@@ -7,9 +7,6 @@ See: https://github.com/klockie86/Hamulight2MQTT
 #include <mqtt.h>
 
 // default constructor
-/*MQTT::MQTT(WiFiClient):PubSubClient(WiFiClient){
-};
-*/
 // get and set functions
 String MQTT::getUser(void){
   return user;
@@ -43,8 +40,7 @@ void MQTT::setPort(String val){
   port = val;
 };
 
-
-// settings should be stored
+// for storing settings in SPIFFS
 void MQTT::shouldSave(void){
   save = true;
 };
@@ -137,10 +133,13 @@ void MQTT::reconnect(String name){
       }
       else{
         DBG_OUTPUT_PORT.println("failed connecting to mqtt, try again in 5 sec");
-        failures ++;
-        if (failures > maxRetry){
-          DBG_OUTPUT_PORT.println("connection mqtt timeout");
-          exit(1);
+        if (maxRetry != 0){
+          failures ++;
+          if (failures > maxRetry){
+            // no real exit function yet. Needs to bee fixed
+            DBG_OUTPUT_PORT.println("connection mqtt timeout");
+            exit(1);
+          }
         }
       delay(5000);
       }

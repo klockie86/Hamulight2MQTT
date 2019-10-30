@@ -1,9 +1,10 @@
 /*
-MultiJammer based on ESP8266
+Hamulight RF433 sender based on ESP8266
 Jeroen Klock 23-10-2019
-See: https://github.com/klockie86/LedWall
+See: https://github.com/klockie86/Hamulight2MQTT
 Todo:
-  deep sleep
+  - add webinterface
+  - receiving signals
 */
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -17,6 +18,7 @@ Todo:
 // MQTT
 #include <mqtt.h>
 
+// Instantiate
 Global global;
 RF433 rf433;
 Hamulight hamulight;
@@ -24,26 +26,30 @@ WiFiClient wificlient;
 MQTT client(wificlient);
 
 
-//callback notifying us of the need to save config
+// callback wifimanager need to save config
 void saveConfigCallback () {
   DBG_OUTPUT_PORT.println("Should save config");
   client.shouldSave();
 }
 
+// callback mqtt received topic
 void callback(char* topic, byte* payload, unsigned int length) {
   DBG_OUTPUT_PORT.println("Callback received: "+String(topic));
 
+  // convert message from byte* to String
   char buffer[length];
   memcpy(buffer,payload,length);
   buffer[length] = '\0';
   String received = String(buffer);
   DBG_OUTPUT_PORT.println("Message: "+received);
 
+  // change brightness
   if(strcmp(topic, CMD_BRIGHT_TOPIC) == 0){
     DBG_OUTPUT_PORT.println("setting brightness: "+received);
     hamulight.setbrightness(received.toInt());
     client.publish(STATE_BRIGHT_TOPIC, received.c_str());
   }
+  // change command on/off
   else if(strcmp(topic, CMD_TOPIC) == 0){
     DBG_OUTPUT_PORT.println("Swithing");
     if((String)received == "ON"){
@@ -103,6 +109,7 @@ void loop() {
   if (WiFi.status() == WL_CONNECTED){
     if (!client.connected()) {
       client.reconnect(global.getName());
+      // no real exit function when no connection yet. Needs to be fixed
     }
     else{
       client.loop();
