@@ -1,0 +1,75 @@
+<html>
+<head>
+    <title>Hamulight 2 MQTT</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	<div id="sidebar">
+		<div id="top"></div>
+		<div id="middle"></div>
+		<div id="bottom"></div>
+	</div>
+	<div id="row_header">
+		<div id= "row_container" class="container">
+			<h1>Hamulight 2 MQTT</h1>
+		</div>
+	</div>
+	<div id= "main_container" class="container">
+		<div id="background">
+			<h2>Bediening</h2>
+	  		<button id="toggle" type="button" onclick="setState(0)">aan / uit</button>
+  			<br/>
+			<div id="general">
+				<h2>Helderheid</h2>
+				<input type="range" min="0" max="255" value="50" class="slider" id="setBrightness"/>
+			</div>
+			<div id="settings">
+				<h2>Reset</h2>
+	  			<button type="button" onclick="reset()">Reset</button>
+			</div>
+		</div>
+	</div>
+	<div id="row_footer">
+		<p>Designed by: <a href="https://github.com/klockie86/Hamulight2MQTT">Jeroen Klock</a></p>
+	</div>
+<script>
+function setState(led) {
+  var xhttp = new XMLHttpRequest();
+//  console.log("set status: "+led);
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      if(this.responseText == "true"){
+        document.getElementById("toggle").style.background = '#3F3';
+        document.getElementById("toggle").value = 'OFF'
+      }
+      else{
+        document.getElementById("toggle").style.background = 'CCC';
+        document.getElementById("toggle").value = 'ON'
+
+      }
+    }
+  };
+  xhttp.open("GET", "setState?State="+led, true);
+  xhttp.send();
+}
+
+setBrightness.onchange = function() {
+  var xhttp = new XMLHttpRequest();
+k//  console.log("setBrightness: "+this.value);
+  xhttp.open("GET", "setBrightness?Brightness="+this.value, true);
+  xhttp.send();
+}
+
+function reset() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.open("GET", "reset?Reset=", true);
+  xhttp.send();
+}
+
+</script>
+</body>
+</html>

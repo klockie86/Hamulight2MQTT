@@ -31,8 +31,10 @@ private:
 public:
   enum command{on_off, bright25, bright50, bright75, bright100};
   Hamulight();
-  void switchOn();
-  void switchOff();
+  void switchOn(void);
+  void switchOff(void);
+  void toggle(void);
+  bool getState(void);
   void setbrightness(uint);
   void init(void);
   void send(Hamulight::command);

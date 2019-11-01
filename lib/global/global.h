@@ -21,6 +21,8 @@ See: https://github.com/klockie86/Hamulight2MQTT
 // GPIO assignment
 #define RF433_RECEIVE_PIN D2
 #define RF433_EMIT_PIN D3
+// webserver
+#define WEBSERVER_PORT 80
 
 ////////////////////////////////////////////////////////////////////////////////
 // Classes

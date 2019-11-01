@@ -28,6 +28,15 @@ void Hamulight::switchOff(){
     state = false;
 };
 
+void Hamulight::toggle(){
+    state = !state;
+    send(on_off);
+};
+
+bool Hamulight::getState(void){
+  return state;
+}
+
 // set brightness. Only 25, 50 ,75 and 100% available.
 // scale 0-255 down to correct code
 void Hamulight::setbrightness(unsigned int val){
