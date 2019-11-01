@@ -34,7 +34,6 @@ Webserver server(WEBSERVER_PORT);
 ////////////////////////////////////////////////////////////////////////////////
 // Calback functions
 ////////////////////////////////////////////////////////////////////////////////
-
 // wifimanager need to save config
 void saveConfigCallback () {
   DBG_OUTPUT_PORT.println("Should save config");
@@ -95,6 +94,7 @@ void setState(){
 void setBrightness(){
   String sRec = server.arg("Brightness");
   DBG_OUTPUT_PORT.println("Webserver received Brightness: "+ sRec);
+  hamulight.setbrightness(sRec.toInt());
   server.send(200, "text/plain", sRec);
 }
 
@@ -114,7 +114,6 @@ void reset(){
 ////////////////////////////////////////////////////////////////////////////////
 // Main functions
 ////////////////////////////////////////////////////////////////////////////////
-
 void setup(){
   DBG_OUTPUT_PORT.println("Setting up...");
   // read settings from SPIFFS
@@ -172,6 +171,7 @@ void setup(){
 }
 
 void loop() {
+  server.handleClient();
   // make MQTT connection
   if (WiFi.status() == WL_CONNECTED){
     if (!client.connected()) {

@@ -44,12 +44,11 @@ function setState(led) {
     if (this.readyState == 4 && this.status == 200) {
       if(this.responseText == "true"){
         document.getElementById("toggle").style.background = '#3F3';
-        document.getElementById("toggle").value = 'OFF'
+        document.getElementById("toggle").innerHTML = 'OFF'
       }
       else{
-        document.getElementById("toggle").style.background = 'CCC';
-        document.getElementById("toggle").value = 'ON'
-
+        document.getElementById("toggle").style.background = '#CCC';
+        document.getElementById("toggle").innerHTML= 'ON'
       }
     }
   };
@@ -59,7 +58,6 @@ function setState(led) {
 
 setBrightness.onchange = function() {
   var xhttp = new XMLHttpRequest();
-k//  console.log("setBrightness: "+this.value);
   xhttp.open("GET", "setBrightness?Brightness="+this.value, true);
   xhttp.send();
 }

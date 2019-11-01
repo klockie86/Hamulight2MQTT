@@ -5,6 +5,8 @@
 // ***************************************************************************
 #ifndef SPIFFS_WEBSERVER_H
 #define SPIFFS_WEBSERVER_H
+// webserver
+#define WEBSERVER_PORT 80
 
 #include <Arduino.h>
 #include <global.h>
@@ -12,6 +14,7 @@
 #include <ESP8266WebServer.h>
 // library for SPIFFS
 #include <FS.h>
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Classes

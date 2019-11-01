@@ -115,7 +115,7 @@ void MQTT::saveSettings(void){
 // re-connect to server
 void MQTT::reconnect(String name){
     // Loop until we're reconnected
-    while(!PubSubClient::connected()) {
+    while(!PubSubClient::connected() && !failed) {
       DBG_OUTPUT_PORT.println("Attempting to connect to MQTT broker as "+name);
       if (connect(name.c_str(),user.c_str(), pass.c_str(), WILL_TOPIC, WILL_QOS, WILL_RETAIN, WILL_MESSAGE)){
         DBG_OUTPUT_PORT.println("connected");
@@ -135,13 +135,13 @@ void MQTT::reconnect(String name){
         DBG_OUTPUT_PORT.println("failed connecting to mqtt, try again in 5 sec");
         if (maxRetry != 0){
           failures ++;
-          if (failures > maxRetry){
+          if (failures >= maxRetry){
             // no real exit function yet. Needs to bee fixed
             DBG_OUTPUT_PORT.println("connection mqtt timeout");
-            exit(1);
+            failed = true;
           }
         }
-      delay(5000);
+        delay(5000);
       }
     }
 };

@@ -39,7 +39,7 @@ See: https://github.com/klockie86/Hamulight2MQTT
 
 class MQTT: public PubSubClient{
 private:
-  const int maxRetry = 0;  // max reconnection tries, 0 = endless
+  const int maxRetry = 5;  // max reconnection tries, 0 = endless
   int failures = 0;
   //MQTT Parameters definition
   String user = "your_username";
@@ -47,6 +47,7 @@ private:
   String server = "192.168.1.100";
   String port = "1883";
   bool save;
+  bool failed = false;
   WiFiClient client;
 
 public:
