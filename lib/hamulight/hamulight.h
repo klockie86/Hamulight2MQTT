@@ -10,7 +10,7 @@ See: https://github.com/klockie86/Hamulight2MQTT
 #include <global.h>
 #include <RF433.h>
 
-#define REPEATE 10
+#define REPEATE 6
 
 ////////////////////////////////////////////////////////////////////////////////
 // Classes

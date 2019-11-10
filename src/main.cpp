@@ -3,6 +3,8 @@ Hamulight RF433 sender based on ESP8266
 Jeroen Klock 23-10-2019
 See: https://github.com/klockie86/Hamulight2MQTT
 Todo:
+  - reduce repetitions of transmit data
+  - return brightness on switch on
   - add favicon
   - receiving RF signals
 */
