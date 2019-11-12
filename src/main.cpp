@@ -28,7 +28,7 @@ Todo:
 
 Global global;
 RF433 rf433;
-Hamulight hamulight;
+Hamulight hamulight(RF433_RECEIVE_PIN, RF433_EMIT_PIN);
 WiFiClient wificlient;
 MQTT client(wificlient);
 Webserver server(WEBSERVER_PORT);

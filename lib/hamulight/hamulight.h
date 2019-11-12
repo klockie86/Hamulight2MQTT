@@ -10,7 +10,7 @@ See: https://github.com/klockie86/Hamulight2MQTT
 #include <global.h>
 #include <RF433.h>
 
-#define REPEATE 6
+#define REPEATE 8
 
 ////////////////////////////////////////////////////////////////////////////////
 // Classes
@@ -30,7 +30,7 @@ private:
 
 public:
   enum command{on_off, bright25, bright50, bright75, bright100};
-  Hamulight();
+  Hamulight(int pin_receive,int pin_emit);
   void switchOn(void);
   void switchOff(void);
   void toggle(void);

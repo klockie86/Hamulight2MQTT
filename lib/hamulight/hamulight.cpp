@@ -7,9 +7,9 @@ See: https://github.com/klockie86/Hamulight2MQTT
 #include <hamulight.h>
 
 // default constructor
-Hamulight::Hamulight(){
-    pin_in = RF433_RECEIVE_PIN;
-    pin_out = RF433_EMIT_PIN;
+Hamulight::Hamulight(int pin_receive,int pin_emit){
+    pin_in = pin_receive;
+    pin_out = pin_emit;
 }
 
 
@@ -69,4 +69,5 @@ void Hamulight::send(Hamulight::command command){
         }
         sendData(false);
     }
+    delayMicroseconds(period*REPEATE);
 }
